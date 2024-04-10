@@ -15,18 +15,21 @@ mod JillsContract {
     use starknet::ContractAddress;
 
     #[storage]
-    struct Storage { // TODO: Add `contract_owner` storage, with ContractAddress type
+    struct Storage {
+        contract_owner: ContractAddress,
     }
 
     #[constructor]
     fn constructor(
         ref self: ContractState, owner: ContractAddress
-    ) { // TODO: Write `owner` to contract_owner storage
+    ) {
+        self.contract_owner.write(owner);
     }
 
     #[abi(embed_v0)]
     impl IJillsContractImpl of super::IJillsContract<ContractState> {
-        fn get_owner(self: @ContractState) -> ContractAddress { // TODO: Read contract_owner storage
+        fn get_owner(self: @ContractState) -> ContractAddress {
+            self.contract_owner.read()
         }
     }
 }
